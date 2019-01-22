@@ -1,0 +1,97 @@
+<div class="col span-1-of-3">
+  <h3>1 Make a preclaim</h3>
+
+    <div class="container-no-shares">
+        <mat-form-field class="no-shares-input">
+          <input type="string" matInput id="nonce" placeholder="Your nonce" value="" (change)="setNonce($event)">
+        </mat-form-field>
+      </div>
+      <div class="container-no-shares">
+        <mat-form-field class="no-shares-input">
+          <input type="string" matInput id="claimedAddress" placeholder="Address to claim" value="" (change)="setAddress($event)">
+        </mat-form-field>
+      </div>
+    
+      <div>
+        <button type="button" class="btn" (click)="preclaim()">Make Preclaim</button>
+      </div>
+</div>
+
+<div class="col span-1-of-3">
+    <h3>2 Make a claim</h3>
+
+    <div class="container-no-shares">
+        <mat-form-field class="no-shares-input">
+          <input type="string" matInput id="nonce2" placeholder="Your nonce from step 1" value="" (change)="setNonce2($event)">
+        </mat-form-field>
+      </div>
+      <div class="container-no-shares">
+        <mat-form-field class="no-shares-input">
+          <input type="string" matInput id="claimedAddress2" placeholder="Address claimed in step 1" value="" (change)="setAddress2($event)">
+        </mat-form-field>
+      </div>
+    
+      <div>
+        <button type="button" class="btn" (click)="claim()">Make a claim</button>
+      </div>
+</div>
+
+
+<div class="col span-1-of-3">
+    <h3>3 Resolve a claim</h3>
+    <div class="container-no-shares">
+        <mat-form-field class="no-shares-input">
+          <input type="string" matInput id="claimedAddress3" placeholder="Address claimed in previous steps" value="" (change)="setAddress3($event)">
+        </mat-form-field>
+      </div>
+    
+      <div>
+        <button type="button" class="btn" (click)="resolve()">Resolve a claim</button>
+      </div>
+</div>
+
+
+
+
+<!-- 
+<mat-horizontal-stepper>
+  <mat-step>
+    <div class="container-no-shares">
+      <mat-form-field class="no-shares-input">
+          <ng-template matStepLabel>Prepare a claim</ng-template>
+        <input type="string" matInput id="nonce" placeholder="Your nonce" value="" (change)="setNonce($event)">
+      </mat-form-field>
+    </div>
+    <div class="container-no-shares">
+      <mat-form-field class="no-shares-input">
+        <input type="string" matInput id="claimedAddress" placeholder="Address to claim" value="" (change)="setAddress($event)">
+      </mat-form-field>
+    </div>
+  </mat-step>
+  <mat-step>
+      <div class="container-no-shares">
+          <mat-form-field class="no-shares-input">
+              <ng-template matStepLabel>Make a claim</ng-template>
+            <input type="string" matInput id="nonce" placeholder="Your nonce" value="" (change)="setNonce($event)">
+          </mat-form-field>
+        </div>
+        <div class="container-no-shares">
+          <mat-form-field class="no-shares-input">
+            <input type="string" matInput id="claimedAddress" placeholder="Address to claim" value="" (change)="setAddress($event)">
+          </mat-form-field>
+        </div>
+  </mat-step>
+  <mat-step>
+      <div class="container-no-shares">
+          <mat-form-field class="no-shares-input">
+              <ng-template matStepLabel>Resolve a claim</ng-template>
+            <input type="string" matInput id="nonce" placeholder="Your nonce" value="" (change)="setNonce($event)">
+          </mat-form-field>
+        </div>
+        <div class="container-no-shares">
+          <mat-form-field class="no-shares-input">
+            <input type="string" matInput id="claimedAddress" placeholder="Address to claim" value="" (change)="setAddress($event)">
+          </mat-form-field>
+        </div>
+  </mat-step>
+</mat-horizontal-stepper> -->

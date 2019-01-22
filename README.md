@@ -1,1 +1,1 @@
-# claim-tool
+# ShareDispenser
