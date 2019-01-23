@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { MetaModule } from './meta/meta.module';
 import { DispenserModule } from './dispenser/dispenser.module';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -43,7 +42,6 @@ import { LearnMoreComponent } from './learn-more/learn-more.component';
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    MetaModule,
     DispenserModule,
   ],
   providers: [],

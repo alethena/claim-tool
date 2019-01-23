@@ -44,13 +44,13 @@ a:hover {
     background-attachment: fixed;
 }
 
-.bg-img-2 {
+/* .bg-img-2 {
     height: 100vh;
     background-image: linear-gradient(#155c72fd, #155c72da, #155c724d), url(../src/resources/css/img/hero.png);
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-}
+} */
 
 .row {
     max-width: 1140px;
@@ -169,7 +169,7 @@ h3 {
 }
 
 .span-1-of-3 {
-	background-color: #155c7211;
+	background-color: #155c7213;
 	width: 25vw;
 }
 
@@ -319,7 +319,7 @@ font-weight: 400;
 
 .mat-form-field {
 	border-top: 20px;
-	font-size: 140%;
+	font-size: 110%;
 	font-family: Saira Semi Condensed;
 	color: #333;
 	font-weight: 400;
@@ -347,6 +347,18 @@ mat-form-field.mat-form-field {
 	font-size: 80%;
 }
 
+
+.selected-address {
+	display: inline-block;
+	font-size: 100%;
+	margin-top: 20px;
+}
+
+.selected-address span {
+	font-weight: 400;
+	font-size: 120%;
+	color: #155c72;
+}
 
 /*------------------------------*/
 /* LEARN MORE */

@@ -1,23 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Web3Service } from '../../util/web3.service';
 import { MatSnackBar } from '@angular/material';
-import { MatDividerModule} from '@angular/material/divider';
-import { MatCheckboxModule } from '@angular/material';
+import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
-
+import { Big } from 'big.js';
 
 declare let require: any;
 
-const XCHF_artifacts = require('../../../assets/contracts/CryptoFranc.json');
-const XCHFAddress = "0x297a9769cf6e0609503e11f224bb0c68689462ee";
-
 const AS_artifacts = require('../../../assets/contracts/Claimable.json');
-const ASAddress = "0xd0A570cc40b949230c76a3bB08dB15ee5755dAc0";
-
-const SD_artifacts = require('../../../assets/contracts/AlethenaShares.json');
-const SDAddress = "0xd0A570cc40b949230c76a3bB08dB15ee5755dAc01";
-
-
+const ASAddress = "0x7713eeAC51EB5Cae2649a574b4d8f590B73F3614";
+const AS_artifacts2 = require('../../../assets/contracts/AlethenaShares.json');
 
 @Component({
   selector: 'app-share-dispenser',
@@ -28,17 +20,6 @@ export class ShareDispenserComponent implements OnInit {
   accounts: string[];
   account: string;
 
-  SDTotalSupply: number = 0;
-  SDAvailable: number = 0;
-  totalPrice: number = 60;
-  pricePerShare: number = 5;
-  numberOfSharesToBuy: number = 12;
-
-
-  shareTokenTerms: boolean = false;
-  privacyPolicy: boolean = false;
-  prospectus: boolean = false;
-
   nonce: string = "Enter a nonce";
   claimedAddress: string = "0x";
   package: string = "";
@@ -48,6 +29,8 @@ export class ShareDispenserComponent implements OnInit {
 
   claimedAddress3: string = "0x";
 
+  collateral = 0;
+
   SD: any;
   XCHF: any;
   constructor(private web3Service: Web3Service, private matSnackBar: MatSnackBar, private matDividerModule: MatDividerModule) {
@@ -55,33 +38,10 @@ export class ShareDispenserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('OnInit: ' + this.web3Service);
-    console.log(this);
-
-    // this.web3Service.artifactsToContract(XCHF_artifacts).then(
-    //   (XCHFAbstraction) => {
-    //     console.log(XCHFAbstraction)
-    //     XCHFAbstraction.at(XCHFAddress).then(
-    //       (XCHFInstance => {
-    //         console.log(XCHFInstance);
-    //         XCHFInstance.totalSupply.call().then(
-    //           (totSupp) => {
-    //             // this.SDAvailable = totSupp.toString();
-    //           }
-    //         )
-    //       })
-    //     )
-    //   }
-    // )
 
     this.watchAccount();
   }
 
-  setAmount(e) {
-    console.log('Setting amount: ' + e.target.value);
-    this.numberOfSharesToBuy = e.target.value;
-    this.totalPrice = e.target.value * this.pricePerShare;
-  }
 
   setNonce(e) {
     this.nonce = e.target.value;
@@ -90,15 +50,67 @@ export class ShareDispenserComponent implements OnInit {
     this.nonce2 = e.target.value;
   }
 
-  setAddress(e) {
+  async setAddress(e) {
     this.claimedAddress = e.target.value;
+    let ASAbstraction = await this.web3Service.artifactsToContract(AS_artifacts2);
+    let ASInstance = await ASAbstraction.at(ASAddress);
+    // let bal = await ASInstance.balanceOf.call(e.target.value);
+
+    let bal = new Big(await ASInstance.balanceOf.call(e.target.value))
+    // bal = this.web3Service.toBigNumber(bal);
+
+    ASAbstraction = await this.web3Service.artifactsToContract(AS_artifacts);
+    ASInstance = await ASAbstraction.at(ASAddress);
+    let rate = new Big(await ASInstance.collateralRate.call());
+    // rate = this.web3Service.toBigNumber(0.0 + rate).div(10**18);
+
+    let price = rate.times(bal).div(10**18);
+    this.web3Service.setStatus("Address " + e.target.value + " currently holds " + bal + " Alethena Shares. Making a claim will cost " + price + " Ether.")
+  
   }
-  setAddress2(e) {
+
+  async setAddress2(e) {
     this.claimedAddress2 = e.target.value;
+    let ASAbstraction = await this.web3Service.artifactsToContract(AS_artifacts2);
+    let ASInstance = await ASAbstraction.at(ASAddress);
+    // let bal = await ASInstance.balanceOf.call(e.target.value);
+
+    let bal = new Big(await ASInstance.balanceOf.call(e.target.value))
+    // bal = this.web3Service.toBigNumber(bal);
+
+    ASAbstraction = await this.web3Service.artifactsToContract(AS_artifacts);
+    ASInstance = await ASAbstraction.at(ASAddress);
+    let rate = new Big(await ASInstance.collateralRate.call());
+    // rate = this.web3Service.toBigNumber(0.0 + rate).div(10**18);
+
+    let price = rate.times(bal).div(10**18);
+    this.collateral = new Big(price*10**18);
+    this.web3Service.setStatus("Address " + e.target.value + " currently holds " + bal + " Alethena Shares. Making a claim will cost " + price + " Ether.")
   }
-  setAddress3(e) {
+
+  async setAddress3(e) {
     this.claimedAddress3 = e.target.value;
+    let ASAbstraction = await this.web3Service.artifactsToContract(AS_artifacts2);
+    let ASInstance = await ASAbstraction.at(ASAddress);
+    // let bal = await ASInstance.balanceOf.call(e.target.value);
+
+    let bal = new Big(await ASInstance.balanceOf.call(e.target.value))
+    // bal = this.web3Service.toBigNumber(bal);
+
+    ASAbstraction = await this.web3Service.artifactsToContract(AS_artifacts);
+    ASInstance = await ASAbstraction.at(ASAddress);
+    let claimer = await ASInstance.getClaimant.call(e.target.value);
+    // rate = this.web3Service.toBigNumber(0.0 + rate).div(10**18);
+
+    // let price = rate.times(bal).div(10**18);
+    if (claimer==0) {
+      this.web3Service.setStatus("You don't have a claim on this address!");
+    }
+    else {
+      this.web3Service.setStatus("Address " + claimer + " currently has a claim on " + e.target.value)
+    }
   }
+
   watchAccount() {
     this.web3Service.accountsObservable.subscribe((accounts) => {
       this.accounts = accounts;
@@ -107,76 +119,64 @@ export class ShareDispenserComponent implements OnInit {
   }
 
   setStatus(status) {
-    this.matSnackBar.open(status, null, {duration: 6000});
+    this.matSnackBar.open(status, null, { duration: 6000 });
   }
 
-  // async sendCoin() {
-  //   if (!this.MetaCoin) {
-  //     this.setStatus('Metacoin is not loaded, unable to send transaction');
-  //     return;
-  //   }
-
-// web3.sha3(web3.toHex(web3.sha3(nonce)) + claimerAddress + claimedAddress, {encoding:"hex"})
-
   async preclaim() {
-    console.log("Account:", this.accounts[0]);
-    console.log("Parameters:",this.nonce, this.accounts[0].slice(2, 42), this.claimedAddress.slice(2, 42));
     let res = await this.web3Service.computePackage(this.nonce, this.accounts[0].slice(2, 42), this.claimedAddress.slice(2, 42));
     this.package = res;
 
-    this.web3Service.artifactsToContract(AS_artifacts).then(
-      (ASAbstraction) => {
-        ASAbstraction.at(ASAddress).then(
-          (ASInstance) => {
-            ASInstance.prepareClaim.sendTransaction(res, { from: this.account, gas: 4000000 }).then(
-              (err,answ)=> {
-                console.log(err,answ);
-              } 
-            )
-          }
-        )
-      }
-    )
+    try {
+      let ASAbstraction = await this.web3Service.artifactsToContract(AS_artifacts);
+      let ASInstance = await ASAbstraction.at(ASAddress);
+      let answ = await ASInstance.prepareClaim.sendTransaction(res, { from: this.account, gas: 4000000 })
+      console.log(answ);
+    }
+    catch (error) {
+      console.log(error);
+      this.web3Service.setStatus("An error occured during your transaction!")
 
+    }
   }
 
   async claim() {
-   
-    let res = await this.web3Service.computePackage(this.nonce, this.accounts[0].slice(2, 42), this.claimedAddress.slice(2, 42));
-    this.package = res;
-    let hashedNonce = await this.web3Service.getHash(this.nonce2);
-    console.log(hashedNonce);
 
-    this.web3Service.artifactsToContract(AS_artifacts).then(
-      (ASAbstraction) => {
-        ASAbstraction.at(ASAddress).then(
-          (ASInstance) => {
-            ASInstance.declareLost.sendTransaction(this.claimedAddress2, hashedNonce, { from: this.account, gas: 4000000 }).then(
-              (err,answ)=> {
-                console.log(err,answ);
-              } 
-            )
-          }
-        )
-      }
-    )
+    try {
+      let res = await this.web3Service.computePackage(this.nonce, this.accounts[0].slice(2, 42), this.claimedAddress.slice(2, 42));
+      this.package = res;
+      let hashedNonce = await this.web3Service.getHash(this.nonce2);
+      
+      let ASAbstraction = await this.web3Service.artifactsToContract(AS_artifacts);
+      let ASInstance = await ASAbstraction.at(ASAddress);
 
+      let answ = await ASInstance.declareLost.sendTransaction(this.claimedAddress2, hashedNonce, { from: this.account, gas: 4000000 , value: this.collateral})
+      console.log(answ);
+    }
+    
+    catch (error) {
+      console.log(error);
+      this.web3Service.setStatus("An error occured during your transaction!")
+    }
   }
 
   async resolve() {
-    this.web3Service.artifactsToContract(AS_artifacts).then(
-      (ASAbstraction) => {
-        ASAbstraction.at(ASAddress).then(
-          (ASInstance) => {
-            ASInstance.resolveClaim.sendTransaction(this.claimedAddress3, { from: this.account, gas: 4000000 }).then(
-              (err,answ)=> {
-                console.log(err,answ);
-              } 
-            )
-          }
-        )
-      }
-    )
+
+    try {
+      let res = await this.web3Service.computePackage(this.nonce, this.accounts[0].slice(2, 42), this.claimedAddress.slice(2, 42));
+      this.package = res;
+      let hashedNonce = await this.web3Service.getHash(this.nonce2);
+
+      let ASAbstraction = await this.web3Service.artifactsToContract(AS_artifacts);
+      let ASInstance = await ASAbstraction.at(ASAddress);
+
+      let answ = await ASInstance.resolveClaim.sendTransaction(this.claimedAddress3, { from: this.account, gas: 4000000 })
+      console.log(answ);
+    }
+
+    catch (error) {
+      console.log(error);
+      this.web3Service.setStatus("An error occured during your transaction!")
+    }
   }
 
 }
