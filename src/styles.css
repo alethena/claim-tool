@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+/* @import "./material-style.scss"; */
 
 /*------------------------------*/
 /* COLORS */
@@ -38,7 +39,7 @@ a:hover {
 
 .bg-img {
     height: 100vh;
-    background-image: linear-gradient(rgba(256,256,256,0.7), rgba(256,256,256,0.9), rgba(256,256,256,0.95)), url(../src/resources/css/img/hero.png);
+    background-image: linear-gradient(rgba(256,256,256,0.7), rgba(256,256,256,0.9), rgba(256,256,256,0.95)), url(../src/resources/css/img/bgimg.jpg);
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -154,6 +155,7 @@ h1 {
 	padding-bottom: 80px;
 	margin-top: -20px;
 	font-weight: 300;
+	text-align: center;
 }
 
 h2 {
@@ -169,8 +171,8 @@ h3 {
 }
 
 .span-1-of-3 {
-	background-color: #155c7213;
-	width: 25vw;
+	/* background-color: #155c7213; */
+	width: 22vw;
 }
 
 /*------------------------------*/
@@ -342,8 +344,12 @@ mat-form-field.mat-form-field {
     color: #155c72ad !important;    
 }
 
+.mat-fab.mat-primary, .mat-flat-button.mat-primary, .mat-mini-fab.mat-primary, .mat-raised-button.mat-primary {
+    background-color: #155c72 !important;
+}
+
 .container-no-shares {
-	padding-top: 10px;
+	padding-top: 4px;
 	font-size: 80%;
 }
 
@@ -629,8 +635,8 @@ footer p {
 }
 
 .span-1-of-3 {
-	width: 28%; 
-	padding: 1%;
+	width: 25%; 
+	padding: 3%;
 	border-radius: 10px;
 }
 
