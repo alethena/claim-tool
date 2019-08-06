@@ -8,7 +8,7 @@ import { Big } from 'big.js';
 declare let require: any;
 
 const AS_artifacts = require('../../../assets/contracts/Claimable.json');
-const ASAddress = "0x93e8E1B42CeBBC93C756A1936767b7Bd8618BA7b";
+const ASAddress = "0xf40c5e190a608b6f8c0bf2b38c9506b327941402";
 const AS_artifacts2 = require('../../../assets/contracts/AlethenaShares.json');
 
 @Component({
